@@ -40,10 +40,8 @@ class GameObject extends HTMLElement {
         //this.direction = (this.speed[0] < 0) ? 1 : -1
         this.style.width = `${this.width}px`
         this.style.height = `${this.height}px`
-        this.style.backgroundSize = `${this.width}px, ${this.height}px`
+        this.style.backgroundSize = `${this.width}px ${this.height}px`
 
-        // this.style.transform = "translate(" + this.pos[0] + "px, " + this.pos[1] + "px) scale(" + this.direction + ",1)"
-
-        this.style.transform = `translate("${this.pos[0]}px, ${this.pos[1]}px") scale("${this.direction}, 1")`
+        this.style.transform = `translate(${this.pos[0]}px, ${this.pos[1]}px) scale(${this.direction}, 1)`
     }
 }

@@ -31,10 +31,10 @@ class GameObject extends HTMLElement {
         else if (this.pos[1] < this.targetPos[1]) {
             this.pos[1] += this.speed[1];
         }
-        this.style.width = this.width + "px";
-        this.style.height = this.height + "px";
-        this.style.backgroundSize = this.width + "px " + this.height + "px";
-        this.style.transform = "translate(" + this.pos[0] + "px, " + this.pos[1] + "px) scale(" + this.direction + ",1)";
+        this.style.width = `${this.width}px`;
+        this.style.height = `${this.height}px`;
+        this.style.backgroundSize = `${this.width}px ${this.height}px`;
+        this.style.transform = `translate(${this.pos[0]}px, ${this.pos[1]}px) scale(${this.direction}, 1)`;
     }
 }
 class ChessPiece extends GameObject {
@@ -57,7 +57,7 @@ class Tile extends ChessPiece {
         super();
         this.width = Board.getInstance().getTileSize();
         this.height = Board.getInstance().getTileSize();
-        this.style.backgroundColor = "white";
+        this.style.backgroundColor = 'white';
     }
     setColor(color) {
         this.style.backgroundColor = color;
@@ -70,7 +70,7 @@ class Tile extends ChessPiece {
         return moves;
     }
 }
-window.customElements.define("tile-component", Tile);
+window.customElements.define('tile-component', Tile);
 class Board {
     constructor() {
         this.BOARD_SIZE = 8;
@@ -84,7 +84,7 @@ class Board {
             for (let i = 0; i < Board.getInstance().getSize(); i++) {
                 for (let j = 0; j < Board.getInstance().getSize(); j++) {
                     let t = new Tile();
-                    t.setColor((i + j) % 2 == 0 ? "#ffffff" : "#000000");
+                    t.setColor((i + j) % 2 == 0 ? '#ffffff' : '#000000');
                     t.initPosition([i, j]);
                     t.update();
                 }
@@ -150,8 +150,8 @@ class Game {
             this.knights.push(z);
         }
         this.gameState = new GameState(this.king.boardPosition, knightPos);
-        window.addEventListener("click", (e) => this.onWindowClick(e));
-        window.addEventListener("touchend", (e) => this.onTouchStart(e));
+        window.addEventListener('click', (e) => this.onWindowClick(e));
+        window.addEventListener('touchend', (e) => this.onTouchStart(e));
         this.gameLoop();
     }
     onTouchStart(e) {
@@ -174,7 +174,7 @@ class Game {
             let legalMoves = this.king.getMoves();
             for (let m of legalMoves) {
                 if (Board.samePosition(m, boardPos)) {
-                    console.log("legal move");
+                    console.log('legal move');
                     this.king.setPosition(boardPos);
                     this.gameState.kingPos = boardPos;
                     this.playerTurn = false;
@@ -185,7 +185,7 @@ class Game {
             }
         }
         else {
-            console.log("Not player turn, yet");
+            console.log('Not player turn, yet');
         }
     }
     gameLoop() {
@@ -203,8 +203,8 @@ class Game {
         requestAnimationFrame(() => this.gameLoop());
     }
 }
-console.log("Start AI Chess");
-window.addEventListener("load", () => new Game());
+console.log('Start AI Chess');
+window.addEventListener('load', () => new Game());
 class Knight extends ChessPiece {
     getMoves(from = this.boardPosition) {
         let moves = [];
@@ -222,19 +222,14 @@ class Knight extends ChessPiece {
         return moves;
     }
 }
-window.customElements.define("knight-component", Knight);
+window.customElements.define('knight-component', Knight);
 class GameAI {
     static moveKnight(king, knights, gameState) {
         let t0 = performance.now();
-        console.log(king);
-        let i = Math.floor(Math.random() * Math.floor(knights.length));
-        let legalMoves = knights[i].getMoves();
-        console.log(legalMoves);
-        let j = Math.floor(Math.random() * Math.floor(legalMoves.length));
-        knights[i].setPosition(legalMoves[j]);
-        gameState.knightPositions[i] = legalMoves[j];
+        let gameStateCopy = gameState.copy();
+        let kingPosCopy = king.getMoves(gameStateCopy.kingPos);
         let t1 = performance.now();
-        console.log("AI move took " + (t1 - t0) + " milliseconds.");
+        console.log(`AI move took: ${Math.round((Number(t1 - t0) + Number.EPSILON) * 100) / 100}ms.`);
     }
 }
 class King extends ChessPiece {
@@ -254,5 +249,5 @@ class King extends ChessPiece {
         return moves;
     }
 }
-window.customElements.define("king-component", King);
+window.customElements.define('king-component', King);
 //# sourceMappingURL=main.js.map

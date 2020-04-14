@@ -22,6 +22,7 @@ function minimax(position, depth, maximizingPlayer)
 // initial call
 minimax(currentPosition, 3, true)
 
+
 ALPHA-BETA PSEUDOCODE
 
 function minimax(position, depth, alpha, beta, maximizingPlayer)

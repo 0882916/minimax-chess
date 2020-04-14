@@ -2,13 +2,11 @@
 /// <reference path='chesspiece.ts' />
 
 class Tile extends ChessPiece {
-
     public constructor() {
         super()
 
         this.width = Board.getInstance().getTileSize()
         this.height = Board.getInstance().getTileSize()
-        //this.setPosition([0, 0])
         this.style.backgroundColor = 'white'
     }
 
@@ -25,5 +23,4 @@ class Tile extends ChessPiece {
         return moves
     }
 }
-
 window.customElements.define('tile-component', Tile)

@@ -4,15 +4,14 @@
 // TODO: Add game over / win / restart game
 
 class Game {
-
-    private king: King                      // the king (=player)
+    private king: King                     // the king (=player)
     private knights: Knight[] = []         // list of knights in the game (=computer/AI)
     private gameOver: boolean = false
-    private gameState: GameState            // current gameState (=position of king and knights)
+    public gameState: GameState            // current gameState (=position of king and knights)
 
     private readonly KNIGHTS: number = 3   // number of knights
 
-    private playerTurn: boolean = true      // player has first turn 
+    private playerTurn: boolean = true     // player has first turn 
 
     constructor() {
         Board.getInstance() // init board
@@ -61,56 +60,54 @@ class Game {
 
         // check if knights are still moving
         let moving = false
+
         for (let go of this.knights) {
-            if (go.moving) {
-                moving = true
-            }
+            if (go.moving) moving = true
         }
 
         // only respond to input during player turn when no knights are moving, and not game over
-        if ((this.playerTurn) && (!moving) && (!this.gameOver)) {
-            console.log(boardPos)
+        if (this.playerTurn && !moving && !this.gameOver) {
+
             let legalMoves: [number, number][] = this.king.getMoves()
 
             // check if requested move is a legal move
             for (let m of legalMoves) {
                 if (Board.samePosition(m, boardPos)) {
-                    console.log('legal move')
                     this.king.setPosition(boardPos)
                     this.gameState.kingPos = boardPos
                     this.playerTurn = false
 
                     // check win
                     if (this.gameState.getScore()[1]) {
+                        console.log(`YOU WIN? THAT'S IMPOSSIBLE!`)
                         this.gameOver = true
+                        location.reload()
                     }
                 }
             }
-        } else {
-            console.log('Not player turn, yet')
-        }
+        } else console.log(`GETTING IMPATIENT ARE WE?`)
     }
 
     private gameLoop() {
-        // init
-
         // move king
         this.king.update()
 
         // move knights
-        for (let go of this.knights) {
-            go.update()
-        }
+        for (let go of this.knights) go.update()
 
         // AI needs to make a move if it is not the player's turn
-        if (!this.playerTurn) {
-
+        if (!this.playerTurn && !this.king.moving) {
+            console.log(`YOUR TURN, KING!`)
             GameAI.moveKnight(this.king, this.knights, this.gameState)
             this.playerTurn = true
+        }
 
-            // check lose
+        // check lose
+        if (!this.king.moving) {
             if (this.gameState.getScore()[1]) {
+                console.log(`YOU LOSE! AGAIN!`)
                 this.gameOver = true
+                location.reload()
             }
         }
 
@@ -118,6 +115,5 @@ class Game {
         requestAnimationFrame(() => this.gameLoop())
     }
 }
-
-console.log('Start AI Chess')
+console.log(`LET THE GAME BEGIN.`)
 window.addEventListener('load', () => new Game())

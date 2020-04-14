@@ -2,7 +2,7 @@
 
 class Board {
     // size of the board (smaller is easier for the AI)
-    private readonly BOARD_SIZE = 8
+    private readonly BOARD_SIZE = 12
     // size of a board tile
     private tileSize = 100
 
@@ -56,6 +56,6 @@ class Board {
 
     // check if two positions are the same
     public static samePosition(a: [number, number], b: [number, number]): boolean {
-        return (a[0] == b[0]) && (a[1] == b[1])
+        return (a[0] === b[0]) && (a[1] === b[1])
     }
 }

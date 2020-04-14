@@ -1,13 +1,11 @@
 /// <reference path='gameobject.ts' />
 
 abstract class ChessPiece extends GameObject {
-
     // position in board-coordinates
     public boardPosition: [number, number]
 
     constructor() {
         super()
-
         // pieces have same size as tiles
         this.width = Board.getInstance().getTileSize()
         this.height = Board.getInstance().getTileSize()
@@ -16,7 +14,6 @@ abstract class ChessPiece extends GameObject {
     // update position (with animation)
     public setPosition(pos: [number, number]) {
         this.boardPosition = pos
-
         this.targetPos = Board.getInstance().boardToScreenPos(this.boardPosition)
     }
 
